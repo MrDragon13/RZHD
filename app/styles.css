@@ -13,6 +13,175 @@
   box-sizing: border-box;
 }
 
+/* Эти правила дублируют критически важную часть Leaflet CSS локально. Они нужны
+ * как страховка на случай, если CDN stylesheet не загрузился, заблокирован сетью
+ * или применился с задержкой. Именно эти свойства отвечают за абсолютное
+ * позиционирование тайлов и слоев; без них браузер раскладывает map tiles обычным
+ * потоком документа, что ломает масштаб и положение маршрутов. */
+.leaflet-container {
+  box-sizing: content-box;
+  position: relative;
+  overflow: hidden;
+  outline-offset: 1px;
+  background: #ddd;
+  font-family: inherit;
+}
+
+.leaflet-pane,
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-tile-container,
+.leaflet-pane > svg,
+.leaflet-pane > canvas,
+.leaflet-zoom-box,
+.leaflet-image-layer,
+.leaflet-layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+  box-sizing: content-box;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.leaflet-tile {
+  width: 256px;
+  height: 256px;
+  max-width: none !important;
+  max-height: none !important;
+}
+
+.leaflet-container img,
+.leaflet-container svg {
+  max-width: none !important;
+  max-height: none !important;
+}
+
+.leaflet-map-pane {
+  z-index: 400;
+}
+
+.leaflet-pane > canvas {
+  pointer-events: none;
+}
+
+.leaflet-interactive {
+  cursor: pointer;
+  pointer-events: visiblePainted;
+}
+
+.leaflet-pane {
+  z-index: 400;
+}
+
+.leaflet-tile-pane {
+  z-index: 200;
+}
+
+.leaflet-overlay-pane {
+  z-index: 400;
+}
+
+.leaflet-shadow-pane {
+  z-index: 500;
+}
+
+.leaflet-marker-pane {
+  z-index: 600;
+}
+
+.leaflet-tooltip-pane {
+  z-index: 650;
+}
+
+.leaflet-popup-pane {
+  z-index: 700;
+}
+
+.leaflet-control {
+  position: relative;
+  z-index: 800;
+  pointer-events: auto;
+}
+
+.leaflet-top,
+.leaflet-bottom {
+  position: absolute;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.leaflet-top {
+  top: 0;
+}
+
+.leaflet-right {
+  right: 0;
+}
+
+.leaflet-bottom {
+  bottom: 0;
+}
+
+.leaflet-left {
+  left: 0;
+}
+
+.leaflet-control-zoom {
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  background: #fff;
+}
+
+.leaflet-control-zoom a {
+  display: block;
+  width: 30px;
+  height: 30px;
+  color: #111;
+  line-height: 30px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.leaflet-control-zoom a + a {
+  border-top: 1px solid #ccc;
+}
+
+.leaflet-control-attribution {
+  padding: 0 5px;
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 11px;
+}
+
+.leaflet-control-attribution a {
+  color: #0078a8;
+}
+
+.leaflet-popup {
+  position: absolute;
+  text-align: center;
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: #fff;
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
+}
+
+/* Наши HTML-маркеры поездов живут внутри Leaflet-контейнера, но визуально относятся
+ * к дизайну приложения. Поэтому для них возвращаем border-box, чтобы белая рамка
+ * входила в заданный размер и не смещала якорь маркера относительно координаты. */
+.leaflet-container .train-marker,
+.leaflet-container .train-marker * {
+  box-sizing: border-box;
+}
+
 /* Цветовая система вынесена в CSS-переменные. Это позволяет менять оформление
  * всего приложения в одном месте и использовать один и тот же цвет маршрута в
  * карточках, линиях, легенде и маркерах поездов. */
@@ -574,6 +743,7 @@ h3 {
 
 .map-panel {
   position: relative;
+  height: calc(100vh - 40px);
   min-height: calc(100vh - 40px);
   overflow: hidden;
   border: 1px solid rgba(219, 228, 239, 0.92);
@@ -583,9 +753,11 @@ h3 {
 }
 
 #map {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: 100%;
-  min-height: calc(100vh - 40px);
+  height: auto;
+  min-height: 0;
 }
 
 .map-overlay {
@@ -785,6 +957,7 @@ h3 {
 
   .map-panel,
   #map {
+    height: 640px;
     min-height: 640px;
   }
 }
@@ -819,6 +992,7 @@ h3 {
 
   .map-panel,
   #map {
+    height: 560px;
     min-height: 560px;
     border-radius: 20px;
   }

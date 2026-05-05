@@ -129,6 +129,14 @@ function initializeMap() {
   state.layers.routes = L.layerGroup().addTo(state.map);
   state.layers.stations = L.layerGroup().addTo(state.map);
   state.layers.trains = L.layerGroup().addTo(state.map);
+
+  // Leaflet рассчитывает положение тайлов, SVG-слоев и маршрутов от фактического
+  // размера контейнера карты. Если браузер еще пересчитывает CSS-grid/оверлеи или
+  // внешний CSS Leaflet загрузился с задержкой, первичный размер может быть
+  // устаревшим. Два отложенных invalidateSize закрывают этот сценарий и убирают
+  // эффект "перепутанных" тайлов и линий, нарисованных не в том масштабе.
+  refreshMapSize();
+  window.addEventListener("resize", refreshMapSize);
 }
 
 function bindEvents() {
@@ -649,11 +657,23 @@ function fitRoutes(routes) {
   // визуальный воздух вокруг линий и не прижимает их к краям viewport.
   const points = routes.flatMap((route) => route.polyline);
   if (!points.length) return;
+  // Перед fitBounds просим Leaflet перечитать размер контейнера. Это особенно важно
+  // после поиска/сброса, когда sidebar мог изменить высоту layout, а карта должна
+  // масштабировать маршрут относительно актуального viewport, а не старого размера.
+  state.map.invalidateSize();
   state.map.fitBounds(L.latLngBounds(points), { padding: [42, 42] });
 }
 
 function fitToAllRoutes() {
   fitRoutes(state.data.routes);
+}
+
+function refreshMapSize() {
+  // Первый вызов через requestAnimationFrame попадает в ближайший кадр после
+  // текущего DOM/CSS-пересчета. Второй, через setTimeout, страхует более медленную
+  // загрузку внешних CSS/шрифтов и изменение высоты контейнера после рендера.
+  requestAnimationFrame(() => state.map?.invalidateSize());
+  window.setTimeout(() => state.map?.invalidateSize(), 250);
 }
 
 function scheduleRealtimeUpdates() {
