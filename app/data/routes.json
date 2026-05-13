@@ -1,0 +1,343 @@
+{
+  "generatedAt": "2026-05-05T00:00:00Z",
+  "source": {
+    "name": "RZD route catalog seed",
+    "description": "Built-in railway corridor dataset used for instant launch. The server also exposes an optional RZD timetable proxy for live timetable lookup by station codes.",
+    "url": "https://www.rzd.ru/"
+  },
+  "stations": [
+    {
+      "id": "moscow",
+      "name": "Москва",
+      "stationName": "Москва Ленинградская / Казанская",
+      "code": "2000000",
+      "region": "Москва",
+      "coords": [55.7761, 37.655]
+    },
+    {
+      "id": "spb",
+      "name": "Санкт-Петербург",
+      "stationName": "Санкт-Петербург-Главный",
+      "code": "2004000",
+      "region": "Санкт-Петербург",
+      "coords": [59.9299, 30.3626]
+    },
+    {
+      "id": "tver",
+      "name": "Тверь",
+      "stationName": "Тверь",
+      "code": "2004600",
+      "region": "Тверская область",
+      "coords": [56.8587, 35.9176]
+    },
+    {
+      "id": "bologoe",
+      "name": "Бологое",
+      "stationName": "Бологое-Московское",
+      "code": "2004570",
+      "region": "Тверская область",
+      "coords": [57.8857, 34.0496]
+    },
+    {
+      "id": "chudovo",
+      "name": "Чудово",
+      "stationName": "Чудово-Московское",
+      "code": "2004420",
+      "region": "Новгородская область",
+      "coords": [59.1164, 31.6831]
+    },
+    {
+      "id": "vladimir",
+      "name": "Владимир",
+      "stationName": "Владимир",
+      "code": "2060600",
+      "region": "Владимирская область",
+      "coords": [56.129, 40.4066]
+    },
+    {
+      "id": "nnovgorod",
+      "name": "Нижний Новгород",
+      "stationName": "Нижний Новгород Московский",
+      "code": "2060001",
+      "region": "Нижегородская область",
+      "coords": [56.3217, 43.9457]
+    },
+    {
+      "id": "cheboksary",
+      "name": "Чебоксары",
+      "stationName": "Чебоксары",
+      "code": "2060810",
+      "region": "Чувашская Республика",
+      "coords": [56.1322, 47.2519]
+    },
+    {
+      "id": "kazan",
+      "name": "Казань",
+      "stationName": "Казань-Пассажирская",
+      "code": "2060615",
+      "region": "Республика Татарстан",
+      "coords": [55.7879, 49.1193]
+    },
+    {
+      "id": "voronezh",
+      "name": "Воронеж",
+      "stationName": "Воронеж-1",
+      "code": "2014000",
+      "region": "Воронежская область",
+      "coords": [51.672, 39.206]
+    },
+    {
+      "id": "rostov",
+      "name": "Ростов-на-Дону",
+      "stationName": "Ростов-Главный",
+      "code": "2064001",
+      "region": "Ростовская область",
+      "coords": [47.236, 39.7139]
+    },
+    {
+      "id": "krasnodar",
+      "name": "Краснодар",
+      "stationName": "Краснодар-1",
+      "code": "2064130",
+      "region": "Краснодарский край",
+      "coords": [45.0346, 38.9737]
+    },
+    {
+      "id": "sochi",
+      "name": "Сочи",
+      "stationName": "Сочи",
+      "code": "2064139",
+      "region": "Краснодарский край",
+      "coords": [43.5855, 39.7231]
+    },
+    {
+      "id": "adler",
+      "name": "Адлер",
+      "stationName": "Адлер",
+      "code": "2064150",
+      "region": "Краснодарский край",
+      "coords": [43.4344, 39.909]
+    },
+    {
+      "id": "kirov",
+      "name": "Киров",
+      "stationName": "Киров-Пассажирский",
+      "code": "2060500",
+      "region": "Кировская область",
+      "coords": [58.5966, 49.6601]
+    },
+    {
+      "id": "perm",
+      "name": "Пермь",
+      "stationName": "Пермь-2",
+      "code": "2030000",
+      "region": "Пермский край",
+      "coords": [58.0105, 56.2502]
+    },
+    {
+      "id": "ekaterinburg",
+      "name": "Екатеринбург",
+      "stationName": "Екатеринбург-Пассажирский",
+      "code": "2030001",
+      "region": "Свердловская область",
+      "coords": [56.8581, 60.6057]
+    },
+    {
+      "id": "tyumen",
+      "name": "Тюмень",
+      "stationName": "Тюмень",
+      "code": "2030100",
+      "region": "Тюменская область",
+      "coords": [57.1455, 65.5615]
+    },
+    {
+      "id": "omsk",
+      "name": "Омск",
+      "stationName": "Омск-Пассажирский",
+      "code": "2040000",
+      "region": "Омская область",
+      "coords": [54.9848, 73.3675]
+    },
+    {
+      "id": "novosibirsk",
+      "name": "Новосибирск",
+      "stationName": "Новосибирск-Главный",
+      "code": "2044000",
+      "region": "Новосибирская область",
+      "coords": [55.0354, 82.8976]
+    },
+    {
+      "id": "krasnoyarsk",
+      "name": "Красноярск",
+      "stationName": "Красноярск-Пассажирский",
+      "code": "2048001",
+      "region": "Красноярский край",
+      "coords": [56.0091, 92.8526]
+    },
+    {
+      "id": "irkutsk",
+      "name": "Иркутск",
+      "stationName": "Иркутск-Пассажирский",
+      "code": "2054001",
+      "region": "Иркутская область",
+      "coords": [52.2896, 104.2806]
+    },
+    {
+      "id": "ulanude",
+      "name": "Улан-Удэ",
+      "stationName": "Улан-Удэ",
+      "code": "2054400",
+      "region": "Республика Бурятия",
+      "coords": [51.8334, 107.5841]
+    },
+    {
+      "id": "chita",
+      "name": "Чита",
+      "stationName": "Чита-2",
+      "code": "2054500",
+      "region": "Забайкальский край",
+      "coords": [52.034, 113.4994]
+    },
+    {
+      "id": "khabarovsk",
+      "name": "Хабаровск",
+      "stationName": "Хабаровск-1",
+      "code": "2034000",
+      "region": "Хабаровский край",
+      "coords": [48.4814, 135.0721]
+    },
+    {
+      "id": "vladivostok",
+      "name": "Владивосток",
+      "stationName": "Владивосток",
+      "code": "2034130",
+      "region": "Приморский край",
+      "coords": [43.1155, 131.8855]
+    }
+  ],
+  "routes": [
+    {
+      "id": "sapsan-751",
+      "trainNumber": "751А",
+      "brand": "Сапсан",
+      "title": "Москва - Санкт-Петербург",
+      "originId": "moscow",
+      "destinationId": "spb",
+      "operator": "РЖД / ДОСС",
+      "distanceKm": 650,
+      "color": "#e63946",
+      "departures": ["05:40", "07:00", "09:40", "13:50", "15:30", "19:30"],
+      "stops": [
+        { "stationId": "moscow", "offset": 0, "dwell": 0 },
+        { "stationId": "tver", "offset": 64, "dwell": 2 },
+        { "stationId": "bologoe", "offset": 140, "dwell": 2 },
+        { "stationId": "chudovo", "offset": 205, "dwell": 1 },
+        { "stationId": "spb", "offset": 238, "dwell": 0 }
+      ]
+    },
+    {
+      "id": "volga-059",
+      "trainNumber": "059Г",
+      "brand": "Волга",
+      "title": "Нижний Новгород - Санкт-Петербург",
+      "originId": "nnovgorod",
+      "destinationId": "spb",
+      "operator": "ФПК",
+      "distanceKm": 1120,
+      "color": "#457b9d",
+      "departures": ["18:10"],
+      "stops": [
+        { "stationId": "nnovgorod", "offset": 0, "dwell": 0 },
+        { "stationId": "vladimir", "offset": 155, "dwell": 8 },
+        { "stationId": "moscow", "offset": 255, "dwell": 25 },
+        { "stationId": "tver", "offset": 370, "dwell": 3 },
+        { "stationId": "bologoe", "offset": 485, "dwell": 5 },
+        { "stationId": "spb", "offset": 720, "dwell": 0 }
+      ]
+    },
+    {
+      "id": "premium-002",
+      "trainNumber": "002Й",
+      "brand": "Премиум",
+      "title": "Москва - Казань",
+      "originId": "moscow",
+      "destinationId": "kazan",
+      "operator": "ФПК",
+      "distanceKm": 793,
+      "color": "#2a9d8f",
+      "departures": ["20:08", "23:08"],
+      "stops": [
+        { "stationId": "moscow", "offset": 0, "dwell": 0 },
+        { "stationId": "vladimir", "offset": 126, "dwell": 3 },
+        { "stationId": "nnovgorod", "offset": 250, "dwell": 15 },
+        { "stationId": "cheboksary", "offset": 535, "dwell": 4 },
+        { "stationId": "kazan", "offset": 705, "dwell": 0 }
+      ]
+    },
+    {
+      "id": "double-decker-104",
+      "trainNumber": "104В",
+      "brand": "Двухэтажный",
+      "title": "Москва - Адлер",
+      "originId": "moscow",
+      "destinationId": "adler",
+      "operator": "ФПК",
+      "distanceKm": 1770,
+      "color": "#f4a261",
+      "departures": ["10:52", "14:40", "23:16"],
+      "stops": [
+        { "stationId": "moscow", "offset": 0, "dwell": 0 },
+        { "stationId": "voronezh", "offset": 385, "dwell": 5 },
+        { "stationId": "rostov", "offset": 890, "dwell": 15 },
+        { "stationId": "krasnodar", "offset": 1125, "dwell": 8 },
+        { "stationId": "sochi", "offset": 1455, "dwell": 3 },
+        { "stationId": "adler", "offset": 1505, "dwell": 0 }
+      ]
+    },
+    {
+      "id": "lastochka-727",
+      "trainNumber": "727Г",
+      "brand": "Ласточка",
+      "title": "Москва - Нижний Новгород",
+      "originId": "moscow",
+      "destinationId": "nnovgorod",
+      "operator": "РЖД / ДОСС",
+      "distanceKm": 442,
+      "color": "#8338ec",
+      "departures": ["06:35", "09:15", "13:05", "18:30"],
+      "stops": [
+        { "stationId": "moscow", "offset": 0, "dwell": 0 },
+        { "stationId": "vladimir", "offset": 112, "dwell": 2 },
+        { "stationId": "nnovgorod", "offset": 236, "dwell": 0 }
+      ]
+    },
+    {
+      "id": "rossiya-001",
+      "trainNumber": "001М",
+      "brand": "Россия",
+      "title": "Москва - Владивосток",
+      "originId": "moscow",
+      "destinationId": "vladivostok",
+      "operator": "ФПК",
+      "distanceKm": 9288,
+      "color": "#1d3557",
+      "departures": ["00:35", "13:50"],
+      "stops": [
+        { "stationId": "moscow", "offset": 0, "dwell": 0 },
+        { "stationId": "nnovgorod", "offset": 375, "dwell": 20 },
+        { "stationId": "kirov", "offset": 865, "dwell": 20 },
+        { "stationId": "perm", "offset": 1350, "dwell": 20 },
+        { "stationId": "ekaterinburg", "offset": 1660, "dwell": 30 },
+        { "stationId": "tyumen", "offset": 1905, "dwell": 20 },
+        { "stationId": "omsk", "offset": 2385, "dwell": 20 },
+        { "stationId": "novosibirsk", "offset": 2870, "dwell": 30 },
+        { "stationId": "krasnoyarsk", "offset": 3565, "dwell": 20 },
+        { "stationId": "irkutsk", "offset": 4605, "dwell": 30 },
+        { "stationId": "ulanude", "offset": 4900, "dwell": 20 },
+        { "stationId": "chita", "offset": 5360, "dwell": 20 },
+        { "stationId": "khabarovsk", "offset": 8240, "dwell": 25 },
+        { "stationId": "vladivostok", "offset": 10080, "dwell": 0 }
+      ]
+    }
+  ]
+}

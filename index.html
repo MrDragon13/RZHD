@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <!--
+      Документ является полностью статической оболочкой приложения: сервер отдает
+      этот HTML, а вся динамика карты, поиска и live-маркеров подключается через
+      /app/main.js. Комментарии намеренно подробные, чтобы структура страницы была
+      понятна даже без запуска приложения.
+    -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Интерактивная карта движения поездов РЖД с маршрутами, маркерами и поиском между станциями."
+    />
+    <title>RZD Live Tracker</title>
+    <!--
+      Leaflet загружается с CDN. preconnect/dns-prefetch заранее подготавливают
+      соединение к unpkg.com, чтобы CSS/JS библиотеки карты начали скачиваться
+      чуть быстрее при первом открытии страницы.
+    -->
+    <link rel="preconnect" href="https://unpkg.com" />
+    <link rel="dns-prefetch" href="https://unpkg.com" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIINfQLe19dVd3N2M8N0Y3E8btTpii7LgY4="
+      crossorigin=""
+    />
+    <link rel="stylesheet" href="/app/styles.css" />
+  </head>
+  <body>
+    <!--
+      app-shell делит экран на две основные зоны:
+      1. левый sidebar с поиском, списком маршрутов и справочником станций;
+      2. правую map-panel с Leaflet-картой и плавающими информационными карточками.
+    -->
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Панель поиска и маршрутов">
+        <!--
+          Hero-блок одновременно выполняет роль заголовка приложения и панели
+          ключевых метрик. Значения routes-count/trains-count/stations-count
+          заполняются JavaScript после загрузки /api/routes.
+        -->
+        <header class="hero">
+          <div class="hero__topline">
+            <div class="brand">
+              <div class="brand__mark" aria-hidden="true">Р</div>
+              <div>
+                <p class="eyebrow">RZD Live Tracker</p>
+                <strong id="source-badge">РЖД</strong>
+              </div>
+            </div>
+            <span class="live-pill">live</span>
+          </div>
+          <h1>Карта движения поездов РЖД</h1>
+          <p class="hero__copy">
+            Поиск поездов между станциями, линии маршрутов, станции и расчетное
+            положение рейсов на карте России.
+          </p>
+          <div class="hero__meta">
+            <div class="metric">
+              <strong id="routes-count">0</strong>
+              <span>маршрутов</span>
+            </div>
+            <div class="metric">
+              <strong id="trains-count">0</strong>
+              <span>поездов в пути</span>
+            </div>
+            <div class="metric">
+              <strong id="stations-count">0</strong>
+              <span>станций</span>
+            </div>
+          </div>
+        </header>
+
+        <!--
+          Форма поиска работает по встроенному каталогу мгновенно, без ожидания
+          внешнего API. После локальной фильтрации JavaScript дополнительно
+          пробует запросить live-расписание через серверный proxy.
+        -->
+        <section class="panel">
+          <div class="panel__header">
+            <div>
+              <p class="eyebrow">Маршрут</p>
+              <h2>Поиск поездов</h2>
+            </div>
+            <button class="btn btn--ghost" id="reset-button" type="button">Сброс</button>
+          </div>
+
+          <form id="search-form" class="search-grid">
+            <div class="field">
+              <label for="origin">Откуда</label>
+              <!--
+                В select изначально есть только универсальная опция. Полный список
+                станций добавляется в main.js из JSON-каталога, чтобы HTML не
+                дублировал данные маршрутов.
+              -->
+              <select id="origin" name="origin">
+                <option value="">Любая станция</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="destination">Куда</label>
+              <select id="destination" name="destination">
+                <option value="">Любая станция</option>
+              </select>
+            </div>
+
+            <div class="field field--full">
+              <label for="date">Дата отправления</label>
+              <input id="date" name="date" type="date" />
+            </div>
+
+            <div class="actions">
+              <button class="btn btn--primary" type="submit">Найти поезда</button>
+              <button class="btn btn--ghost" id="refresh-button" type="button">Обновить</button>
+            </div>
+          </form>
+
+          <p class="source-note">
+            Встроенный каталог работает сразу. Сервер также содержит proxy к
+            неофициальному endpoint pass.rzd.ru для live-поиска по station code.
+          </p>
+        </section>
+
+        <!--
+          Контейнер результатов поиска. Каждая карточка маршрута создается
+          JavaScript как button, чтобы маршрут можно было выбрать мышью или
+          клавиатурой, а активная карточка синхронизировалась с линией на карте.
+        -->
+        <section class="panel">
+          <div class="panel__header">
+            <div>
+              <p class="eyebrow" id="updated-at">обновление...</p>
+              <h2>Найденные маршруты</h2>
+            </div>
+          </div>
+          <div id="results-list" class="route-list" aria-live="polite"></div>
+        </section>
+
+        <!--
+          Справочник станций показывает пользователю не только город, но и station
+          code РЖД. Эти коды нужны серверному endpoint /api/rzd/search для запроса
+          неофициального API pass.rzd.ru.
+        -->
+        <section class="panel station-panel">
+          <div class="panel__header">
+            <div>
+              <p class="eyebrow">Справочник</p>
+              <h2>Станции</h2>
+            </div>
+          </div>
+          <ul id="station-list" class="station-list"></ul>
+        </section>
+      </aside>
+
+      <!--
+        Основная область карты. Leaflet требует один пустой DOM-контейнер (#map),
+        а все линии, точки и popup добавляются программно в main.js. map-overlay
+        лежит поверх карты и содержит статус данных, легенду и детали маршрута.
+      -->
+      <main class="map-panel">
+        <div id="map" role="application" aria-label="Карта маршрутов поездов"></div>
+        <div class="map-overlay">
+          <!--
+            Статусная карточка используется как область aria-live: если live-proxy
+            недоступен или поиск завершился, текст статуса обновляется и доступен
+            assistive technologies.
+          -->
+          <section class="status-card" aria-live="polite">
+            <h2>Статус данных</h2>
+            <p id="status-text">Подключаем маршруты и станции...</p>
+            <div class="legend">
+              <span class="legend__item">
+                <span class="legend__swatch" style="--route-color: #d52b1e"></span>
+                линия маршрута
+              </span>
+              <span class="legend__item">
+                <span class="station-marker"></span>
+                станция
+              </span>
+              <span class="legend__item">
+                <span class="train-marker" aria-hidden="true">751</span>
+                поезд
+              </span>
+            </div>
+          </section>
+
+          <!--
+            Детальная карточка выбранного маршрута. До выбора маршрута показывается
+            empty-state, затем JavaScript заменяет содержимое на номер поезда,
+            длительность, расстояние, отправления и timeline остановок.
+          -->
+          <section class="status-card" id="route-details">
+            <div class="empty-state">
+              <strong>Выберите маршрут</strong>
+              <span>Кликните по линии на карте или карточке рейса.</span>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!--
+      Небольшой toast-контейнер оставлен для кратких уведомлений. Сейчас основной
+      канал сообщений - статусная карточка, но элемент уже размечен доступно
+      через role=status и aria-live.
+    -->
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <!--
+      Сначала подключается Leaflet, затем модуль приложения. main.js ожидает, что
+      глобальный объект L уже существует, поэтому порядок script-тегов важен.
+    -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="/app/main.js" type="module"></script>
+  </body>
+</html>
